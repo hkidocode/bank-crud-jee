@@ -1,7 +1,6 @@
 package dao;
 
 import connection.MyConnection;
-import models.Client;
 import models.Compte;
 
 import javax.sql.DataSource;
@@ -11,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class ClientDaoImpl implements ClientDao {
+public class AdminDaoImpl implements AdminDao {
     @Override
     public Compte getClient(int idCompte) {
         Compte compte = null;

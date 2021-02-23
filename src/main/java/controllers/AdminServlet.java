@@ -1,8 +1,7 @@
 package controllers;
 
-import dao.ClientDao;
-import dao.ClientDaoImpl;
-import models.Client;
+import dao.AdminDao;
+import dao.AdminDaoImpl;
 import models.Compte;
 
 import javax.servlet.ServletException;
@@ -15,13 +14,13 @@ import java.util.ArrayList;
 
 @WebServlet(name = "AdminServlet", urlPatterns = "/")
 public class AdminServlet extends HttpServlet {
-    private ClientDao clientDao = new ClientDaoImpl();
+    private AdminDao adminDao = new AdminDaoImpl();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ArrayList<String> types = clientDao.getAllComptesType();
+        ArrayList<String> types = adminDao.getAllComptesType();
         request.setAttribute("types", types);
         String action  = request.getServletPath();
         switch (action) {
@@ -55,7 +54,7 @@ public class AdminServlet extends HttpServlet {
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idClient = Integer.parseInt(request.getParameter("id"));
-        Compte existentCompte = clientDao.getClient(idClient);
+        Compte existentCompte = adminDao.getClient(idClient);
         String type = existentCompte.getType();
         request.setAttribute("type", type);
         request.setAttribute("compte", existentCompte);
@@ -69,7 +68,7 @@ public class AdminServlet extends HttpServlet {
         String accountType = request.getParameter("type");
         double balance = Double.parseDouble(request.getParameter("balance"));
         Compte compte = new Compte(firstName, lastName, accountNum, accountType, balance);
-        clientDao.addClient(compte);
+        adminDao.addClient(compte);
         response.sendRedirect("/list");
     }
 
@@ -82,20 +81,20 @@ public class AdminServlet extends HttpServlet {
         long accountNum = Long.parseLong(request.getParameter("account-number"));
         double balance = Double.parseDouble(request.getParameter("balance"));
         Compte compte = new Compte(firstName, lastName, idClient, accountNum, balance);
-        clientDao.updateClient(compte);
+        adminDao.updateClient(compte);
         response.sendRedirect("/list");
 
     }
 
     private void deleteClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idClient = Integer.parseInt(request.getParameter("id"));
-        clientDao.deleteCompte(idClient);
-        clientDao.deleteClient(idClient);
+        adminDao.deleteCompte(idClient);
+        adminDao.deleteClient(idClient);
         response.sendRedirect("/list");
     }
 
     private void listClients(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ArrayList<Compte> comptes =  clientDao.getAllClient();
+        ArrayList<Compte> comptes =  adminDao.getAllClient();
         request.setAttribute("comptes", comptes);
         request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
@@ -103,7 +102,7 @@ public class AdminServlet extends HttpServlet {
     private void listClientsBySearch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String last = request.getParameter("last");
         String type = request.getParameter("type");
-        ArrayList<Compte> comptes =  clientDao.getAllClientBySearch(last, type);
+        ArrayList<Compte> comptes =  adminDao.getAllClientBySearch(last, type);
         request.setAttribute("comptes", comptes);
         request.getRequestDispatcher("/index.jsp").forward(request, response);
     }

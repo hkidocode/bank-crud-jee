@@ -5,7 +5,7 @@ import models.Compte;
 
 import java.util.ArrayList;
 
-public interface ClientDao {
+public interface AdminDao {
     Compte getClient(int idCompte);
     ArrayList<Compte> getAllClient();
     ArrayList<Compte> getAllClientBySearch(String last, String type);
